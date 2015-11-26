@@ -1,4 +1,4 @@
-# Persistence Learning
+# **Persistence Learning**
 
 This code implements the **kernel(s) for persistence diagrams** proposed in the following
 two publications. Please use the provided BibTeX entries when citing our work.
@@ -18,11 +18,15 @@ two publications. Please use the provided BibTeX entries when citing our work.
     year      = {2015}}
 ```
 
+# Overview
+**[Compilation](#compilation)**  
+**[Examples](#examples)**  
+
 # Compilation
 
-The core of the code ```diagram_distance``` depends on DIPHA which is included as
-a submodule. After you have checked out the repository to your local harddisk
-you can checkout the submodule via
+The core of the code is in ```diagram_distance.cpp``` and depends on
+DIPHA which is included as a submodule. After you have checked out the
+repository to your local hard disk you can checkout the submodule via
 
 ```
 git update submodule --recursive
