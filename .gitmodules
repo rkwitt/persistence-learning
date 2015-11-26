@@ -4,3 +4,4 @@
 [submodule "code/figtree"]
 	path = code/figtree
 	url = https://github.com/rkwitt/figtree.git
+    ignore = dirty
