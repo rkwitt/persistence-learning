@@ -21,7 +21,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
 
 # Overview
 
-**[Compilation](#compilation)**    
+**[Compilation](#compilation)**
 **[Examples](#examples)**
 
 # Compilation
@@ -38,6 +38,13 @@ you can checkout the submodule(s) via
 
 ```bash
 git update submodule --recursive
+```
+
+In case the submodules do not get checked-out properly (or nothing happens),
+execute the heper script
+
+```bash
+./git-submodule-sync.rb
 ```
 
 Once this has finished, change into the ```code/diagram_distance``` directory
@@ -124,7 +131,7 @@ diagrams computed from data, but simple create random persistence diagrams
 for measuring performance of the kernel.
 
 ```MATLAB
-cd 'code/matlab'
+cd 'code/matlab';
 pl_setup
 stat = pl_test_timing('/tmp/test', 50:50:200, 20, 0, 1);
 disp(stat);
@@ -134,4 +141,32 @@ This will run ```diagram_distance``` (1) with and (2) without support for FGT
 and output timing results (in seconds) for both variants. In particular, we
 start with diagrams of 50 random points and increase this to 200 in steps of
 50 points. In every run, 20 such diagrams are created, resulting in 20x20 Gram
-matrices. The output is written to ```/tmp/test``` which is created in case it does not exist.
+matrices. The output is written to ```/tmp/test``` which is created in case it
+does not exist.
+
+### Averaging PSS feature maps
+
+In this example, we take a large random sample of points from a double annulus,
+then draw a couple of small random samples from that data, compute persistence
+diagrams (using DIPHA) and eventually average the PSS feature maps. This is a
+good example to show how persistence diagrams from distance matrices using DIPHA.
+For each random sample, the distance matrix is simply the pairwise Euclidean
+distance between all the points in the sample.
+
+The full functionality is implemented in the MATLAB function ```pl_experiment_pss_average.m```.
+To produce the results from the *NIPS 2015* paper (see above), we additionally provide a
+```.mat``` file ```pl_experiment_pss_average_NIPS15.mat``` which you can load
+and pass to the script. This sets the configuration (e.g., radii of annuli, seed,
+  etc.) we used in the paper. We can run the script as follows:
+
+```matlab
+cd 'code/matlab';
+pl_setup;
+out_dir = '/tmp/out';
+load ../../data/pl_experiment_pss_average_NIPS15.mat
+result = pl_experiment_pss_average(pl_experiment_pss_average_NIPS15, out_dir);
+```
+
+This will write all output files to ```/tmp/out```. This includes (1) the persistence
+diagrams, (2) the distance matrices, (3) plots of all the samples, (4) PSS
+feature maps and (5) the average PSS feature map.
