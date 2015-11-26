@@ -1,7 +1,12 @@
 [submodule "code/dipha"]
 	path = code/dipha
 	url = https://ubauer@bitbucket.org/ubauer/dipha.git
+    ignore = dirty
 [submodule "code/figtree"]
 	path = code/figtree
 	url = https://github.com/rkwitt/figtree.git
+    ignore = dirty
+[submodule "code/export_fig"]
+	path = code/export_fig
+	url = https://github.com/altmany/export_fig.git
     ignore = dirty

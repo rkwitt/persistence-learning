@@ -7,6 +7,9 @@ function pl_setup()
 [a,~,~] = fileparts(a) ;
 root = a ;
 
+addpath(fullfile(root, 'export_fig'        )) ;
+addpath(fullfile(root, 'dipha/matlab'      )) ;
+addpath(fullfile(root, 'matlab/experiments')) ;
 addpath(fullfile(root, 'matlab/utilities'  )) ;
 addpath(fullfile(root, 'matlab/testing'    )) ;
 
