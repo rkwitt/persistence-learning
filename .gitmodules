@@ -1,3 +1,6 @@
 [submodule "code/dipha"]
 	path = code/dipha
 	url = https://ubauer@bitbucket.org/ubauer/dipha.git
+[submodule "code/figtree"]
+	path = code/figtree
+	url = https://github.com/rkwitt/figtree.git
