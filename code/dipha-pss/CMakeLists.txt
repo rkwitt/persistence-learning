@@ -82,7 +82,7 @@ FILE(GLOB dipha_algorithms_includes "../dipha/include/dipha/algorithms/*.h")
 
 add_executable (diagram_distance src/diagram_distance.cpp)
 if (USE_FGT)
-	target_link_libraries(diagram_distance ${MPI_LIBRARIES} figtree)
+	target_link_libraries(diagram_distance ${MPI_LIBRARIES} figtree ann_figtree_version)
 	target_compile_definitions(diagram_distance PRIVATE USE_FGT=1)
 else (USE_FGT)
 	target_link_libraries(diagram_distance ${MPI_LIBRARIES})

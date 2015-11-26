@@ -20,16 +20,23 @@ two publications. Please use the provided BibTeX entries when citing our work.
 ```
 
 # Overview
-**[Compilation](#compilation)**  
-**[Examples](#examples)**  
+
+**[Compilation](#compilation)**    
+**[Examples](#examples)**
 
 # Compilation
 
 The core of the code is in ```diagram_distance.cpp``` and depends on
 DIPHA which is included as a submodule. After you have checked out the
-repository to your local hard disk you can checkout the submodule via
+repository via
 
+```bash
+git clone https://github.com/rkwitt/persistence-learning.git
 ```
+
+you can checkout the submodule(s) via
+
+```bash
 git update submodule --recursive
 ```
 
@@ -59,36 +66,31 @@ brew install open-mpi
 To enable support for kernel computation via the (improved) Fast-Gauss-Transform
 we need the ```figtree``` library. This can be obtained from the original author
 Vlad I. Morariu from [here](ttps://github.com/vmorariu/figtree) or you use our
-fork (which contains a few small fixes to eliminate compiler warnings) using
+fork (which contains a few small fixes to eliminate compiler warnings) which was
+checked-out during the ```git submodule update``` into ```code/figtree```.
+
+Next, compile ```figtree``` to build a *static* library. This is done, since
+we will call (in our experiments) ```diagram_distance``` from MATLAB and we
+want to avoid having to set the library path. To compile ```figtree``` simply
+type
 
 ```bash
-git clone https://github.com/rkwitt/figtree.git
+cd code/figtree
+make FIGTREE_LIB_TYPE=static
 ```
 
-For the sake of argument, lets assume this has been checked out to ```/tmp/figtree```.
-Next, compile ```figtree``` (not covered here) and make sure that you have set
-the environment paths such that the libraries can be loaded. On MacOS X, using
-our setting with ```figtree``` in ```/tmp/figtree```, we would have to set (or
-add to our ```.bahsrc``` or ```.zshrc``` depending on what type of shell you
-use)
-
-```bash
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/tmp/figtree/lib
-```
-
-Once this is done, we can
-configure ```dipha-pss``` to use the library. This is done by entering the
-cmake GUI, enabling the ```USE_FGT``` flag and then setting the correct paths
-for the ```FIGTREE_INCLUDE``` and ```FIGTREE_LIB``` variable. In our example,
-using the command line this would look like (from scratch)
+Once this is done, we can configure ```dipha-pss``` to use the library. This is
+done by entering the cmake GUI, enabling the ```USE_FGT``` flag and then setting
+the correct paths for the ```FIGTREE_INCLUDE``` and ```FIGTREE_LIB``` variable.
+In our example, using the command line this would look like (from scratch)
 
 ```bash
 cd dipha-pss
 mkdir build
 cd build
 cmake .. -DUSE_FGT=ON \
-  -DFIGTREE_LIB=/tmp/figtree/lib \
-  -DFIGTREE_INCLUDE=/tmp/figtree/include
+  -DFIGTREE_LIB=../../figtree/lib \
+  -DFIGTREE_INCLUDE=../../figtree/include
 make
 ```
 
