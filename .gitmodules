@@ -1,0 +1,4 @@
+[submodule "dipha"]
+	path = dipha
+	url = https://ubauer@bitbucket.org/ubauer/dipha.git
+	branch = master
