@@ -148,14 +148,14 @@ does not exist.
 
 In this example, we take a large random sample of points from a double annulus,
 then draw a couple of small random samples from that data, compute persistence
-diagrams (using DIPHA) and eventually average the PSS feature maps. This is a
-good example to show how persistence diagrams from distance matrices using DIPHA.
+diagrams (using DIPHA) and eventually average the PSS feature maps. The full 
+collection of points and three random samples are shown below:
+
+![Input](https://github.com/rkwitt/persistence-learning/blob/master/common/pss_averaging_input.png "Input")
+
+This is a good example to show how persistence diagrams from distance matrices using DIPHA.
 For each random sample, the distance matrix is simply the pairwise Euclidean
 distance between all the points in the sample.
-
-![Sample 1](https://github.com/rkwitt/persistence-learning/blob/master/common/points_001-web.png "Sample 1")
-![Sample 2](https://github.com/rkwitt/persistence-learning/blob/master/common/points_002-web.png "Sample 2")
-![Sample 3](https://github.com/rkwitt/persistence-learning/blob/master/common/points_003-web.png "Sample 3")
 
 The full functionality is implemented in the MATLAB function ```pl_experiment_pss_average.m```.
 To produce the results from the *NIPS 2015* paper (see above), we additionally provide a
