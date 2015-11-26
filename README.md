@@ -146,22 +146,23 @@ does not exist.
 
 ### Averaging PSS feature maps
 
-In this example, we take a large random sample of points from a double annulus,
-then draw a couple of small random samples from that data, compute persistence
-diagrams (using DIPHA) and eventually average the PSS feature maps. The full 
-collection of points and three random samples are shown below:
+In this example, we take a large (random) sample of points from a double annulus,
+then draw a couple of *small* random samples from that collection, compute persistence
+diagrams (from the small samples) and eventually average the corresponding PSS 
+feature maps. The full collection of points and three exemplary random samples are 
+shown in the figure below:
 
 ![Input](https://github.com/rkwitt/persistence-learning/blob/master/common/pss_averaging_input.png "Input")
 
-This is a good example to show how persistence diagrams from distance matrices using DIPHA.
-For each random sample, the distance matrix is simply the pairwise Euclidean
-distance between all the points in the sample.
+This is a good example to illustrate how to compute persistence diagrams from distance 
+matrices using DIPHA. In particular, for each random sample, the distance matrix simply is 
+the *pairwise Euclidean distance* between all the points in each random sample.
 
 The full functionality is implemented in the MATLAB function ```pl_experiment_pss_average.m```.
-To produce the results from the *NIPS 2015* paper (see above), we additionally provide a
+To produce the results from the *NIPS 2015* paper (see reference above), we additionally provide a
 ```.mat``` file ```pl_experiment_pss_average_NIPS15.mat``` which you can load
 and pass to the script. This sets the configuration (e.g., radii of annuli, seed,
-  etc.) we used in the paper. We can run the script as follows:
+  etc.) we used in the paper. We run the script as follows:
 
 ```matlab
 cd 'code/matlab';
@@ -171,6 +172,8 @@ load ../../data/pl_experiment_pss_average_NIPS15.mat
 result = pl_experiment_pss_average(pl_experiment_pss_average_NIPS15, out_dir);
 ```
 
-This will write all output files to ```/tmp/out```. This includes (1) the persistence
+This writes all output files to ```/tmp/out``` including (1) the persistence
 diagrams, (2) the distance matrices, (3) plots of all the samples, (4) PSS
-feature maps and (5) the average PSS feature map.
+feature maps and (5) the average PSS feature map. The computed persistence
+diagrams are also available as part of the ```result``` structure that is 
+returned by the script.
