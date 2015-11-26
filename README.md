@@ -1,4 +1,4 @@
-# ![PLLogo](https://github.com/rkwitt/persistence-learning/blob/master/pr/logo-small.png) Persistence Learning
+# Persistence Learning
 
 
 This code implements the **kernel(s) for persistence diagrams** proposed in the following
