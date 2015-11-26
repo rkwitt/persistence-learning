@@ -114,4 +114,21 @@ In the following, we show some examples which reproduce some of the results
 in the *CVPR* and *NIPS* paper. *Note that these examples use MATLAB code
 (also contained in the repository).*
 
-Tbd.
+### Timing
+
+We start with a simple timing experiment, where we do not use persistence
+diagrams computed from data, but simple create random persistence diagrams
+for measuring performance of the kernel.
+
+```MATLAB
+cd 'code/matlab'
+pl_setup
+stat = pl_test_timing('/tmp/test', 50:50:200, 20, 0, 1);
+disp(stat);
+```
+
+This will run ```diagram_distance``` (1) with and (2) without support for FGT
+and output timing results (in seconds) for both variants. In particular, we
+start with diagrams of 50 random points and increase this to 200 in steps of
+50 points. In every run, 20 such diagrams are created, resulting in 20x20 Gram
+matrices. The output is written to ```/tmp/test``` which is created in case it does not exist.
