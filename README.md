@@ -21,7 +21,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
 
 # Overview
 
-**[Compilation](#compilation)**   
+**[Compilation](#compilation)**    
 **[Examples](#examples)**
 
 # Compilation
@@ -177,3 +177,100 @@ diagrams, (2) the distance matrices, (3) plots of all the samples, (4) PSS
 feature maps and (5) the average PSS feature map. The computed persistence
 diagrams are also available as part of the ```result``` structure that is 
 returned by the script.
+
+### Simple classification with SVMs
+
+In this demonstration, we will create toy data from the annuli as before, however,
+this time the objective is to distinguish samples drawn from a single annulus
+and samples drawn from a double-annulus based on their persistence diagrams.
+
+First, we create the sample data. We will use ```/tmp/``` as our output
+directory.
+
+```matlab
+out_dir = '/tmp';
+cd code/matlab;
+pl_setup;
+
+cnt=1;
+for i=1:10
+    % create filename
+    filename = fullfile(out_dir, sprintf('dmat_%.3d.dipha', cnt));
+    % Draw 100 points, center [0, 0], inner radius = 1, outer radius = 2
+    points = pl_sample_annulus([0,0], 1, 2, 100, -1)';
+    D = squareform(pdist(points));
+    save_distance_matrix(D, filename);
+    cnt=cnt+1;
+end
+for i=1:10
+    filename = fullfile(out_dir, sprintf('dmat_%.3d.dipha', cnt));
+    % Draw 100 points, two centers [0, 1] and [0, -1]
+    points = pl_sample_linked_annuli( ...
+        100, [0 1], 1, 1.5, [0 -1], 0.5, 1, -1);
+    D = squareform(pdist(points));
+    save_distance_matrix(D, filename);
+    cnt=cnt+1;
+end
+```
+
+Next, we compute persistence diagrams (by hand), using DIPHA. The inputs are
+(as before) the distance matrices we just created from the point samples. We
+use a simple bash script (e.g., ```compute.sh```) to do this job. Just set the variable
+```DIPHA_BINARY``` to the correct path to the ```dipha``` binary.
+
+```bash
+#!/bin/bash
+DIPHA_BINARY=<ADD PATH TO DIPHA BINARY HERE>
+for i in `seq 1 20`; do
+    SRC_FILE=`printf "dmat_%.3d.dipha" ${i}`
+    DST_FILE=`printf "dmat_%.3d.pd" ${i}`
+    CMD="${DIPHA_BINARY} --upper_dim 2 ${SRC_FILE} ${DST_FILE}"
+    ${CMD}
+done
+```
+Move this script to ```/tmp/``` (since this was the output directory in the
+MATLAB code) and execute it:
+
+```bash
+cd /tmp/
+chmod +x compute.sh
+./compute.#!/bin/sh
+```
+We can now use the PSS kernel to compute the Gram matrix, i.e., the matrix
+of pairwise kernel evaluations between all created persistence diagrams.
+This can be done very easily, since ```diagram_distance``` accepts a ASCII
+file as input, where all persistence diagrams are listed (one per line).
+In ```/tmp/``` we create such a list via
+
+```bash
+cd /tmp/
+find . -name 'dmat*.pd' > diagrams.list
+```
+Finally, we execute ```diagram_distance``` and compute features up
+to dimension two (set via ```---dim```). In our example, we compute
+the kernel for 1-dimensional features and set the
+time parameter of the kernel (set via ```--time```) to 0.1.
+
+
+```bash
+cd code/dipha-pss/build/bin
+./diagram_distance --inner_product --time 0.1 --dim 1 /tmp/diagrams.list > /tmp/kernel.txt
+```
+
+The kernel matrix, saved as ```/tmp/kernel.txt``` can now be used, e.g., to
+train a SVM classifier. We will use libsvm for that purpose, in particular,
+the MATLAB interface to libsvm (see the libsvm documentation on how to compile
+the MATLAB interface).
+
+```matlab
+labels = [ones(10,1);ones(10,1)*2]; % Create labels for training
+pos = randsample(1:20,15); % Indices of diagrams used for training
+neg = setdiff(1:20,pos);   % Indices of diagrams used for testing
+model = svmtrain(labels(pos),[(1:length(pos))' kernel(pos,pos)], '-t 4 -c 1');
+[pred,acc,~] = svmpredict(labels(neg), [(1:5)' kernel(neg,pos)], model);
+disp(acc);
+```
+Ideally, we get an accuracy of 100%, simply because the problem is also
+very easy. In the demonstrations that follwo, we will use more realistic
+data. This example just illustrates the *basic* pipeline when we want to
+use the kernel in a classification setup.
