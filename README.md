@@ -21,8 +21,11 @@ two publications. Please use the provided BibTeX entries when citing our work.
 
 # Overview
 
-**[Compilation](#compilation)**    
-**[Examples](#examples)**
+- **[Compilation](#compilation)**
+- **[Examples](#examples)**
+  - [Timing](#timing)
+  - [Averaging PSS feature maps](#averaging)
+  - [Simple classification with SVMs](#classification)
 
 # Compilation
 
@@ -148,14 +151,14 @@ does not exist.
 
 In this example, we take a large (random) sample of points from a double annulus,
 then draw a couple of *small* random samples from that collection, compute persistence
-diagrams (from the small samples) and eventually average the corresponding PSS 
-feature maps. The full collection of points and three exemplary random samples are 
+diagrams (from the small samples) and eventually average the corresponding PSS
+feature maps. The full collection of points and three exemplary random samples are
 shown in the figure below:
 
 ![Input](https://github.com/rkwitt/persistence-learning/blob/master/common/pss_averaging_input.png "Input")
 
-This is a good example to illustrate how to compute persistence diagrams from distance 
-matrices using DIPHA. In particular, for each random sample, the distance matrix simply is 
+This is a good example to illustrate how to compute persistence diagrams from distance
+matrices using DIPHA. In particular, for each random sample, the distance matrix simply is
 the *pairwise Euclidean distance* between all the points in each random sample.
 
 The full functionality is implemented in the MATLAB function ```pl_experiment_pss_average.m```.
@@ -175,7 +178,7 @@ result = pl_experiment_pss_average(pl_experiment_pss_average_NIPS15, out_dir);
 This writes all output files to ```/tmp/out``` including (1) the persistence
 diagrams, (2) the distance matrices, (3) plots of all the samples, (4) PSS
 feature maps and (5) the average PSS feature map. The computed persistence
-diagrams are also available as part of the ```result``` structure that is 
+diagrams are also available as part of the ```result``` structure that is
 returned by the script.
 
 ### Simple classification with SVMs
