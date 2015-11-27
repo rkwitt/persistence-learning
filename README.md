@@ -24,8 +24,8 @@ two publications. Please use the provided BibTeX entries when citing our work.
 - **[Compilation](#compilation)**
 - **[Examples](#examples)**
   - [Timing](#timing)
-  - [Averaging PSS feature maps](#averaging)
-  - [Simple classification with SVMs](#classification)
+  - [Averaging PSS feature maps](#averaging-pss-feature-maps)
+  - [Simple classification with SVMs](#simple-classification-with-svms)
 
 # Compilation
 
