@@ -1,6 +1,6 @@
 /*  Copyright 2014 IST Austria
 
-Contributed by: Jan Reininghaus, Stefan Huber
+Contributed by: Jan Reininghaus, Stefan Huber, Roland Kwitt
 
 This file is part of DIPHA.
 
