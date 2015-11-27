@@ -22,6 +22,8 @@ two publications. Please use the provided BibTeX entries when citing our work.
 # Overview
 
 - **[Compilation](#compilation)**
+  - [Compiling support for the Fast-Gauss-Transform](#compiling-support-for-the-fast-gauss-transform) 
+  - [Compiling DIPHA](#compiling-dipha)
 - **[Examples](#examples)**
   - [Timing](#timing)
   - [Averaging PSS feature maps](#averaging-pss-feature-maps)
