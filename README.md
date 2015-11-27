@@ -46,7 +46,7 @@ git update submodule --recursive
 ```
 
 In case the submodules do not get checked-out properly (or nothing happens),
-execute the heper script
+execute the helper script
 
 ```bash
 ./git-submodule-sync.rb
@@ -276,6 +276,6 @@ model = svmtrain(labels(pos),[(1:length(pos))' kernel(pos,pos)], '-t 4 -c 1');
 disp(acc);
 ```
 Ideally, we get an accuracy of 100%, simply because the problem is also
-very easy. In the demonstrations that follwo, we will use more realistic
+very easy. In the demonstrations that follows, we will use more realistic
 data. This example just illustrates the *basic* pipeline when we want to
 use the kernel in a classification setup.
