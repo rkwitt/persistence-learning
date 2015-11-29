@@ -13,6 +13,14 @@ addpath(fullfile(root, 'matlab/experiments')) ;
 addpath(fullfile(root, 'matlab/utilities'  )) ;
 addpath(fullfile(root, 'matlab/testing'    )) ;
 
+if (exist(fullfile(root,'external/sihks'), 'dir') == 7)
+    addpath(fullfile(root, 'external/sihks'));
+end
+if (exist(fullfile(root,'external/STLRead'), 'dir') == 7)
+    addpath(fullfile(root, 'external/STLRead'));
+end
+if (exist(fullfile(root,'external/iso2mesh'), 'dir') == 7)
+    addpath(fullfile(root, 'external/iso2mesh'));
+end
 fprintf('PL ready.\n');
-
 end

@@ -1,2 +1,5 @@
 *.m~
 code/dipha-pss/build/*
+code/external/dipha
+code/external/figtree
+code/external/export_fig

@@ -22,7 +22,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
 # Overview
 
 - **[Compilation](#compilation)**
-  - [Compiling support for the Fast-Gauss-Transform](#compiling-support-for-the-fast-gauss-transform) 
+  - [Compiling support for the Fast-Gauss-Transform](#compiling-support-for-the-fast-gauss-transform)
   - [Compiling DIPHA](#compiling-dipha)
 - **[Examples](#examples)**
   - [Timing](#timing)
@@ -42,6 +42,7 @@ git clone https://github.com/rkwitt/persistence-learning.git
 you can checkout the submodule(s) via
 
 ```bash
+git init
 git update submodule --recursive
 ```
 
@@ -279,3 +280,46 @@ Ideally, we get an accuracy of 100%, simply because the problem is also
 very easy. In the demonstrations that follows, we will use more realistic
 data. This example just illustrates the *basic* pipeline when we want to
 use the kernel in a classification setup.
+
+### Using 3D shapes as input data
+
+In both the *CVPR* and the *NIPS* paper, we experiment with persistence
+diagrams, computed from functions on surfaces of 3D shapes. In the following
+steps, we demonstrate the full pipeline from 3D shapes, represented as
+surface meshes, to persistence diagrams. We also provide the full dataset
+of 3D corpus callosum shapes from the *NIPS* paper for research purposes.
+
+#### Additional 3rd party code
+
+For the full pipeline to work, we will need some additional MATLAB
+code which will make our life easier when dealing with meshes. In
+particular, we will need:
+
+1. [STLRead]((http://www.mathworks.com/matlabcentral/fileexchange/22409-stl-file-reader/content/STLRead/html/stldemo.html})
+2. [iso2mesh](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi)
+
+
+
+#### Input data
+
+The input data is available in [STL](https://en.wikipedia.org/wiki/STL_(file_format)
+format. We will use Eric Johnson's STL file reader to load the files; see STLRead code.
+
+*Importantly, the meshes already are a valid simplicial complex, since they
+represent a triangulation of the object's surface. Next, we will compute a
+function value for each face of the complex.*
+
+#### Compute function
+
+
+
+
+
+
+
+
+1. Read STL files
+2. Compute HKS
+3. Triangulation to DIPHA-compatible complex
+4. Run DIPHA
+5. Perform classification/hypothesis testing
