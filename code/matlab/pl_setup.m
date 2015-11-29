@@ -7,12 +7,14 @@ function pl_setup()
 [a,~,~] = fileparts(a) ;
 root = a ;
 
-addpath(fullfile(root, 'export_fig'        )) ;
-addpath(fullfile(root, 'dipha/matlab'      )) ;
-addpath(fullfile(root, 'matlab/experiments')) ;
-addpath(fullfile(root, 'matlab/utilities'  )) ;
-addpath(fullfile(root, 'matlab/testing'    )) ;
+% These libraries we require for basic usage
+addpath(fullfile(root, 'external/export_fig'        )) ;
+addpath(fullfile(root, 'external/dipha/matlab'      )) ;
+addpath(fullfile(root, 'matlab/experiments'         )) ;
+addpath(fullfile(root, 'matlab/utilities'           )) ;
+addpath(fullfile(root, 'matlab/testing'             )) ;
 
+% The following libraries are only required for special purposes!
 if (exist(fullfile(root,'external/sihks'), 'dir') == 7)
     addpath(fullfile(root, 'external/sihks'));
 end
@@ -22,5 +24,5 @@ end
 if (exist(fullfile(root,'external/iso2mesh'), 'dir') == 7)
     addpath(fullfile(root, 'external/iso2mesh'));
 end
+
 fprintf('PL ready.\n');
-end
