@@ -42,8 +42,8 @@ git clone https://github.com/rkwitt/persistence-learning.git
 you can checkout the submodule(s) via
 
 ```bash
-git init
-git update submodule --recursive
+git submodule init
+git submodule update --recursive
 ```
 
 In case the submodules do not get checked-out properly (or nothing happens),
@@ -80,7 +80,7 @@ To enable support for kernel computation via the (improved) Fast-Gauss-Transform
 we need the ```figtree``` library. This can be obtained from the original author
 Vlad I. Morariu from [here](ttps://github.com/vmorariu/figtree) or you use our
 fork (which contains a few small fixes to eliminate compiler warnings) which was
-checked-out during the ```git submodule update``` into ```code/figtree```.
+checked-out during the ```git submodule update``` into ```code/external/figtree```.
 
 Next, compile ```figtree``` to build a *static* library. This is done, since
 we will call (in our experiments) ```diagram_distance``` from MATLAB and we
@@ -88,7 +88,7 @@ want to avoid having to set the library path. To compile ```figtree``` simply
 type
 
 ```bash
-cd code/figtree
+cd code/external/figtree
 make FIGTREE_LIB_TYPE=static
 ```
 
@@ -102,8 +102,8 @@ cd dipha-pss
 mkdir build
 cd build
 cmake .. -DUSE_FGT=ON \
-  -DFIGTREE_LIB=../../figtree/lib \
-  -DFIGTREE_INCLUDE=../../figtree/include
+  -DFIGTREE_LIB=../../external/figtree/lib \
+  -DFIGTREE_INCLUDE=../../external/figtree/include
 make
 ```
 
@@ -118,7 +118,7 @@ also uses ```cmake```, so the process should be fairly simple. The
 standard process would look like
 
 ```bash
-cd code/dipha
+cd code/external/dipha
 mkdir build
 cd build
 cmake ..
@@ -284,10 +284,15 @@ use the kernel in a classification setup.
 ### Using 3D shapes as input data
 
 In both the *CVPR* and the *NIPS* paper, we experiment with persistence
-diagrams, computed from functions on surfaces of 3D shapes. In the following
-steps, we demonstrate the full pipeline from 3D shapes, represented as
-surface meshes, to persistence diagrams. We also provide the full dataset
-of 3D corpus callosum shapes from the *NIPS* paper for research purposes.
+diagrams obtained from surfaces of 3D shapes. In particular, filtrations
+are computed via sublevel sets of a function defined on a simplical 
+complex (given by the triangulated surface mesh of the 3D shape).
+
+In the following steps, we demonstrate the full pipeline: from 3D 
+shapes, represented as surface meshes to persistence diagrams. We 
+also provide the full dataset of 3D corpus callosum shapes from the 
+*NIPS* paper for research purposes. The datasets of the *CVPR* paper
+(i.e., SHREC 2014) can be found online.
 
 #### Additional 3rd party code
 
@@ -295,31 +300,23 @@ For the full pipeline to work, we will need some additional MATLAB
 code which will make our life easier when dealing with meshes. In
 particular, we will need:
 
-1. [STLRead]((http://www.mathworks.com/matlabcentral/fileexchange/22409-stl-file-reader/content/STLRead/html/stldemo.html})
+1. [STLRead](http://www.mathworks.com/matlabcentral/fileexchange/22409-stl-file-reader/content/STLRead/html/stldemo.html)
 2. [iso2mesh](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi)
 
+#### Data
 
+The data that we use are *segmentations* of the corpus callosum, i.e., a structure
+in our brain that connects the two hemispheres. These segmentations are binary
+masks (in 3D) for which we also have a surface mesh available (i.e., part of the 
+output of the segmentation process).
 
-#### Input data
+- The *raw* meshes for the corpus callosum surfaces can be downloaded from [here](https://drive.google.com/file/d/0BxHF82gaPzgSeElON0hLU2MtLXM/view?usp=sharing)
+- A MATLAB ```.mat``` file with already pre-processed data is available from [here](https://drive.google.com/file/d/0BxHF82gaPzgSTzV1NlZuVUtNRTQ/view?usp=sharing)
 
-The input data is available in [STL](https://en.wikipedia.org/wiki/STL_(file_format)
-format. We will use Eric Johnson's STL file reader to load the files; see STLRead code.
+If you are not interested in processing the meshes from scratch, we recommend
+using the ```.mat``` file, since all meshes have been checked already.
 
-*Importantly, the meshes already are a valid simplicial complex, since they
-represent a triangulation of the object's surface. Next, we will compute a
-function value for each face of the complex.*
+#### Mesh preparation
 
-#### Compute function
+tbd.
 
-
-
-
-
-
-
-
-1. Read STL files
-2. Compute HKS
-3. Triangulation to DIPHA-compatible complex
-4. Run DIPHA
-5. Perform classification/hypothesis testing
