@@ -14,15 +14,20 @@ addpath(fullfile(root, 'matlab/experiments'         )) ;
 addpath(fullfile(root, 'matlab/utilities'           )) ;
 addpath(fullfile(root, 'matlab/testing'             )) ;
 
+fprintf('Trying to load additional packages ...\n');
+
 % The following libraries are only required for special purposes!
 if (exist(fullfile(root,'external/sihks'), 'dir') == 7)
     addpath(fullfile(root, 'external/sihks'));
+    fprintf('Found/Loaded: SIHKS\n');    
 end
 if (exist(fullfile(root,'external/STLRead'), 'dir') == 7)
     addpath(fullfile(root, 'external/STLRead'));
+    fprintf('Found/Loaded: STLRead\n');        
 end
 if (exist(fullfile(root,'external/iso2mesh'), 'dir') == 7)
     addpath(fullfile(root, 'external/iso2mesh'));
+    fprintf('Found/Loaded: iso2mesh\n');    
 end
 
 fprintf('PL ready.\n');

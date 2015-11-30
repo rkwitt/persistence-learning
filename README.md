@@ -28,6 +28,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
   - [Timing](#timing)
   - [Averaging PSS feature maps](#averaging-pss-feature-maps)
   - [Simple classification with SVMs](#simple-classification-with-svms)
+  - [Using 3D shapes as input data](using-3d-shapes-as-input-data)
 
 # Compilation
 
@@ -285,12 +286,12 @@ use the kernel in a classification setup.
 
 In both the *CVPR* and the *NIPS* paper, we experiment with persistence
 diagrams obtained from surfaces of 3D shapes. In particular, filtrations
-are computed via sublevel sets of a function defined on a simplical 
+are computed via sublevel sets of a function defined on a simplical
 complex (given by the triangulated surface mesh of the 3D shape).
 
-In the following steps, we demonstrate the full pipeline: from 3D 
-shapes, represented as surface meshes to persistence diagrams. We 
-also provide the full dataset of 3D corpus callosum shapes from the 
+In the following steps, we demonstrate the full pipeline: from 3D
+shapes, represented as surface meshes to persistence diagrams. We
+also provide the full dataset of 3D corpus callosum shapes from the
 *NIPS* paper for research purposes. The datasets of the *CVPR* paper
 (i.e., SHREC 2014) can be found online.
 
@@ -302,21 +303,81 @@ particular, we will need:
 
 1. [STLRead](http://www.mathworks.com/matlabcentral/fileexchange/22409-stl-file-reader/content/STLRead/html/stldemo.html)
 2. [iso2mesh](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi)
+3. [(Scale-Invariant) Heat-Kernel Signature](http://cvn.ecp.fr/personnel/iasonas/code/sihks.zip)
 
 #### Data
 
 The data that we use are *segmentations* of the corpus callosum, i.e., a structure
 in our brain that connects the two hemispheres. These segmentations are binary
-masks (in 3D) for which we also have a surface mesh available (i.e., part of the 
+masks (in 3D) for which we also have a surface mesh available (i.e., part of the
 output of the segmentation process).
 
-- The *raw* meshes for the corpus callosum surfaces can be downloaded from [here](https://drive.google.com/file/d/0BxHF82gaPzgSeElON0hLU2MtLXM/view?usp=sharing)
-- A MATLAB ```.mat``` file with already pre-processed data is available from [here](https://drive.google.com/file/d/0BxHF82gaPzgSTzV1NlZuVUtNRTQ/view?usp=sharing)
+- [Download](https://drive.google.com/file/d/0BxHF82gaPzgSNUlXeFZvRnJ0MEk/view?usp=sharing) raw meshes (STL files)
+- [Download](https://drive.google.com/file/d/0BxHF82gaPzgSWmQyTVZPVDFiN1U/view?usp=sharing) preprocessed meshes for MATLAB
+- [Download](https://drive.google.com/file/d/0BxHF82gaPzgSUHNaUGNVVVREdzA/view?usp=sharing) meta data (i.e., subject information)
 
-If you are not interested in processing the meshes from scratch, we recommend
-using the ```.mat``` file, since all meshes have been checked already.
+If you are *not* specifically interested in processing the meshes from scratch,
+we recommend using the MATLAB data, since all meshes have been checked
+already.
 
-#### Mesh preparation
+#### Processing pipeline
 
-tbd.
+We use the pre-processed meshes in this example. The functions that will be used
+within the experiment scripts are:
 
+- ```utilities/pl_mmd.m```
+- ```utilities/pl_normalize_kernel.m```
+- ```utilities/pl_mesh2dipha.m```
+
+First, we download the MATLAB data from
+the provided link and save the ```.mat``` file ```OASIS_cc.mat```, e.g., at
+```/tmp/OASIS_cc.mat```. To compute simplicial complexes, we then use the
+MATLAB script ```pl_experiment_OASIS_run_dipha``` in the following way:
+
+```matlab
+pl_experiment_OASIS_run_dipha('/tmp/OASIS_cc.mat', 'OASIS_cc', 'cc', '/tmp/output')
+```
+
+This will process all meshes in the ```.mat``` file and write the simplicial
+complexes, as well as the persistence diagrams into ```/tmp/output``` with
+all files prefixed by ```cc_```.
+
+Second, we group all subjects according to the desired membership (here:
+*demented* vs. *non-demented* at the first visit), compute the kernel and
+finally run the kernel two-sample test. The grouping and visit information
+is available as meta-data and should be extracted into ```/tmp/output```.
+You will also need to configure the two-sample test and provide the options
+(in the form of a MATLAB struct) to ```pl_experiment_OASIS_run_mmd.m```.
+An exemplary option file (to reproduce the results of the *NIPS* paper is
+provided in the ```data``` directory).
+
+```matlab
+load ../data/options_pl_experiment_OASIS_run_dipha.mat
+[K,pval] = pl_experiment_OASIS_run_mmd('/tmp/OASIS_cc.mat','OASIS_cc', 'cc', ...
+  '/tmp/dipha/Group.txt', ...
+  '/tmp/dipha/Visit.txt', ...
+  options_pl_experiment_OASIS_run_dipha);
+```
+
+#### Mesh preprocessing
+
+In case you don't want to use the preprocessed meshes with already computed
+Heat-Kernel signatures (e.g., when you want to set the Heat-Kernel signature
+times yourself), unpack the raw data, e.g., to ```/tmp/output``` and also
+save the meta-data somewhere (we need the ```Subjects.txt``` file). Then
+we run
+
+```matlab
+subjects = pl_experiment_OASIS_subjects('/tmp/output/Subjects.txt');
+```
+
+Next, edit the ```pl_mesh2hks.m``` MATLAB script and set the desired parameters.
+Then, execute
+
+```matlab
+OASIS_cc = pl_mesh2hks('/tmp/output/raw_OASIS_cc', subjects, 1000);
+```
+
+The final parameter 1000 is the scaling of the mesh (to avoid numerical
+instabilities). This produces the same result that is already available
+in the MATLAB file ```OASIS_cc.mat```.
