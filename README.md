@@ -28,7 +28,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
   - [Timing](#timing)
   - [Averaging PSS feature maps](#averaging-pss-feature-maps)
   - [Simple classification with SVMs](#simple-classification-with-svms)
-  - [Using 3D shapes as input data](using-3d-shapes-as-input-data)
+  - [Using shapes as input data](using-shapes-as-input-data)
 
 # Compilation
 
@@ -282,7 +282,7 @@ very easy. In the demonstrations that follows, we will use more realistic
 data. This example just illustrates the *basic* pipeline when we want to
 use the kernel in a classification setup.
 
-### Using 3D shapes as input data
+### Using shapes as input data
 
 In both the *CVPR* and the *NIPS* paper, we experiment with persistence
 diagrams obtained from surfaces of 3D shapes. In particular, filtrations
