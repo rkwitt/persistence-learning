@@ -28,7 +28,7 @@ two publications. Please use the provided BibTeX entries when citing our work.
   - [Timing](#timing)
   - [Averaging PSS feature maps](#averaging-pss-feature-maps)
   - [Simple classification with SVMs](#simple-classification-with-svms)
-  - [Using shapes as input data](using-shapes-as-input-data)
+  - [Using shapes as input data](#using-shapes-as-input-data)
 
 # Compilation
 
@@ -287,30 +287,40 @@ use the kernel in a classification setup.
 In both the *CVPR* and the *NIPS* paper, we experiment with persistence
 diagrams obtained from surfaces of 3D shapes. In particular, filtrations
 are computed via sublevel sets of a function defined on a simplical
-complex (given by the triangulated surface mesh of the 3D shape).
+complex (given by the triangulated surface mesh of the 3D shape in that
+case).
 
-In the following steps, we demonstrate the full pipeline: from 3D
-shapes, represented as surface meshes to persistence diagrams. We
-also provide the full dataset of 3D corpus callosum shapes from the
+In the following steps, we demonstrate a full processing pipeline to 
+reproduce the results for one dataset of the *NIPS* paper. In particular,
+we go from 3D shapes, represented as surface meshes, to persistence diagrams
+and then compute a two-sample hypothesis test. 
+
+We provide the full dataset of 3D corpus callosum shapes from the
 *NIPS* paper for research purposes. The datasets of the *CVPR* paper
-(i.e., SHREC 2014) can be found online.
+(i.e., SHREC 2014) can be found online - The processing pipeline is
+very similar, except that the hypothesis test is replaced by a 
+support vector machine for classification (similar to our previous
+experiment).
 
 #### Additional 3rd party code
 
 For the full pipeline to work, we will need some additional MATLAB
 code which will make our life easier when dealing with meshes. In
-particular, we will need:
+particular, we need:
 
 1. [STLRead](http://www.mathworks.com/matlabcentral/fileexchange/22409-stl-file-reader/content/STLRead/html/stldemo.html)
 2. [iso2mesh](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi)
 3. [(Scale-Invariant) Heat-Kernel Signature](http://cvn.ecp.fr/personnel/iasonas/code/sihks.zip)
 
+The script ```pl_setup.m``` expects these software packages to be available under
+```code/external``` .
+
 #### Data
 
-The data that we use are *segmentations* of the corpus callosum, i.e., a structure
-in our brain that connects the two hemispheres. These segmentations are binary
+The data that we use are *segmentations* of the [corpus callosum](https://en.wikipedia.org/wiki/Corpus_callosum), 
+i.e., a structure in our brain that connects the two hemispheres. These segmentations are binary
 masks (in 3D) for which we also have a surface mesh available (i.e., part of the
-output of the segmentation process).
+output of the segmentation process). The data can be found at:
 
 - [Download](https://drive.google.com/file/d/0BxHF82gaPzgSNUlXeFZvRnJ0MEk/view?usp=sharing) raw meshes (STL files)
 - [Download](https://drive.google.com/file/d/0BxHF82gaPzgSWmQyTVZPVDFiN1U/view?usp=sharing) preprocessed meshes for MATLAB
@@ -323,16 +333,19 @@ already.
 #### Processing pipeline
 
 We use the pre-processed meshes in this example. The functions that will be used
-within the experiment scripts are:
+within our scripts are:
 
 - ```utilities/pl_mmd.m```
 - ```utilities/pl_normalize_kernel.m```
 - ```utilities/pl_mesh2dipha.m```
+- ```utilities/pl_mesh2hks.m```
+- ```experiments/pl_experiment_OASIS_run_dipha.m```
+- ```experiments/pl_experiment_OASIS_run_mmd.m```
 
 First, we download the MATLAB data from
 the provided link and save the ```.mat``` file ```OASIS_cc.mat```, e.g., at
 ```/tmp/OASIS_cc.mat```. To compute simplicial complexes, we then use the
-MATLAB script ```pl_experiment_OASIS_run_dipha``` in the following way:
+MATLAB function ```pl_experiment_OASIS_run_dipha.m``` in the following way:
 
 ```matlab
 pl_experiment_OASIS_run_dipha('/tmp/OASIS_cc.mat', 'OASIS_cc', 'cc', '/tmp/output')
@@ -364,8 +377,7 @@ load ../data/options_pl_experiment_OASIS_run_dipha.mat
 In case you don't want to use the preprocessed meshes with already computed
 Heat-Kernel signatures (e.g., when you want to set the Heat-Kernel signature
 times yourself), unpack the raw data, e.g., to ```/tmp/output``` and also
-save the meta-data somewhere (we need the ```Subjects.txt``` file). Then
-we run
+save the meta-data, e.g., at ```/tmp/output/```.
 
 ```matlab
 subjects = pl_experiment_OASIS_subjects('/tmp/output/Subjects.txt');
