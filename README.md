@@ -290,6 +290,8 @@ are computed via sublevel sets of a function defined on a simplical
 complex (given by the triangulated surface mesh of the 3D shape in that
 case).
 
+![ccmesh](https://github.com/rkwitt/persistence-learning/blob/master/common/ccmesh.png "ccmesh")
+
 In the following steps, we demonstrate a full processing pipeline to 
 reproduce the results for one dataset of the *NIPS* paper. In particular,
 we go from 3D shapes, represented as surface meshes, to persistence diagrams
