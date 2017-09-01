@@ -43,15 +43,8 @@ git clone https://github.com/rkwitt/persistence-learning.git
 you can checkout the submodule(s) via
 
 ```bash
-git submodule init
-git submodule update --recursive
-```
-
-In case the submodules do not get checked-out properly (or nothing happens),
-execute the helper script
-
-```bash
-./git-submodule-sync.rb
+git pull
+git submodule update --init --recursive   
 ```
 
 Once this has finished, change into the ```code/diagram_distance``` directory
