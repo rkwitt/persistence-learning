@@ -1,0 +1,3 @@
+[submodule "code/external/dipha"]
+	path = code/external/dipha
+	url = https://github.com/DIPHA/dipha.git
