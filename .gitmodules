@@ -1,9 +1,0 @@
-[submodule "code/external/dipha"]
-	path = code/external/dipha
-	url = https://ubauer@bitbucket.org/ubauer/dipha.git
-[submodule "code/external/figtree"]
-	path = code/external/figtree
-	url = https://github.com/rkwitt/figtree.git
-[submodule "code/external/export_fig"]
-	path = code/external/export_fig
-	url = https://github.com/altmany/export_fig.git
